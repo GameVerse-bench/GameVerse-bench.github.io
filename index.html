@@ -1,0 +1,1562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>GameVerse</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Noto Sans', sans-serif;
+            padding-top: 56px;
+        }
+
+        /* Navigation Bar */
+        .navbar-fixed {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-bottom: 3px solid #00d1b2;
+        }
+
+        .navbar-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            padding: 0 1.5rem;
+            height: 56px;
+            gap: 0.5rem;
+        }
+
+        .navbar-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: #1a1a2e;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-right: 2rem;
+            flex-shrink: 0;
+        }
+
+        .navbar-logo img {
+            height: 32px;
+            width: auto;
+        }
+
+        .navbar-links {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .navbar-links::-webkit-scrollbar {
+            display: none;
+        }
+
+        .navbar-link {
+            padding: 0.5rem 0.85rem !important;
+            color: #4a4a4a;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 6px;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+        /* 去掉 Bulma 为 navbar-link 添加的下拉箭头 */
+        .navbar-link::after {
+            display: none !important;
+        }
+
+        .navbar-link:hover {
+            background: #f0f0f0;
+            color: #1a1a2e;
+        }
+
+        .navbar-link.active {
+            background: #1a1a2e;
+            color: white;
+        }
+
+        .hero {
+            padding-top: 4rem;
+            padding-bottom: 2rem;
+        }
+
+        .project-logo {
+            max-width: 120px;
+            height: auto;
+            margin-bottom: 1.5rem;
+        }
+
+        .publication-title {
+            font-weight: 700;
+            font-size: 2.0rem;
+        }
+
+        .publication-authors {
+            margin-top: 0.75rem;
+        }
+
+        .publication-authors a {
+            color: #4a4a4a;
+        }
+
+        .publication-authors a:hover {
+            text-decoration: underline;
+        }
+
+        .author-block {
+            line-height: 2;
+        }
+
+        .publication-links {
+            margin-top: 1.5rem;
+        }
+
+        .publication-links .button {
+            margin: 0.25rem;
+        }
+
+        .external-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section {
+            padding: 3rem 1.5rem;
+            scroll-margin-top: 70px;
+            background: #ffffff;
+        }
+        .section.section-bg-alt {
+            background: #f5f5f5;
+        }
+
+        .title.is-3 {
+            margin-bottom: 1.5rem;
+        }
+
+        .content p {
+            font-size: 1.125rem;
+            line-height: 1.8;
+            text-align: justify;
+        }
+
+        .content p b {
+            font-weight: 600;
+        }
+
+        /* Video Grid Styles - 15 games: 3 cols (easy/medium/hard) × 5 rows (categories) */
+        .video-grid-5x3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(5, 1fr);
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        /* 15 games: 3 列 (Easy/Medium/Hard) + 列头 */
+        .games-grid-with-headers {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: auto repeat(5, 1fr);
+            gap: 0.5rem 1rem;
+            margin: 2rem 0;
+            align-items: center;
+        }
+        .games-grid-with-headers .games-col-header {
+            font-weight: 600;
+            color: #363636;
+            font-size: 0.95rem;
+            text-align: center;
+            padding: 0.5rem;
+        }
+
+        .video-grid-4x5 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(5, 1fr);
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        /* Models vs Human: 3 cols (2 models + human) × 5 rows，仅列头 */
+        .models-grid-with-headers {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: auto repeat(5, 1fr);
+            gap: 0.5rem 1rem;
+            margin: 2rem 0;
+            align-items: center;
+        }
+        .models-grid-with-headers .models-col-header {
+            font-weight: 600;
+            color: #363636;
+            font-size: 0.95rem;
+            text-align: center;
+            padding: 0.5rem;
+        }
+
+        /* Game Taxonomy - Game Collection (FlashAdventure-style) */
+        .game-collection {
+            margin-top: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .game-collection-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #363636;
+        }
+        .game-collection-desc {
+            font-size: 1rem;
+            color: #4a4a4a;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        .game-category-tabs {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 0.25rem;
+            margin-bottom: 1.25rem;
+            list-style: none;
+            list-style-type: none;
+            margin-left: 0;
+            margin-right: 0;
+            padding-left: 0;
+            padding-right: 0;
+        }
+        .game-category-tabs li {
+            list-style: none;
+            list-style-type: none;
+        }
+        .game-category-tabs li::marker {
+            content: none;
+            display: none;
+        }
+        .game-category-tab {
+            flex: 1;
+            min-width: 0;
+            padding: 0.5rem 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #4a4a4a;
+            background: #f5f5f5;
+            border: 1px solid #e8e8e8;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+        @media (max-width: 768px) {
+            .game-category-tabs { flex-wrap: wrap; }
+            .game-category-tab { flex: 1 1 45%; }
+        }
+        .game-category-tab:hover {
+            background: #eee;
+            border-color: #00d1b2;
+            color: #363636;
+        }
+        .game-category-tab.active {
+            background: #00d1b2;
+            border-color: #00d1b2;
+            color: #fff;
+        }
+        .game-category-tab .tab-count {
+            font-size: 0.8em;
+            opacity: 0.9;
+            margin-left: 0.2rem;
+        }
+        .game-taxonomy-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.25rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        @media (max-width: 768px) {
+            .game-taxonomy-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+        }
+        .game-taxonomy-item {
+            text-align: center;
+            display: none;
+        }
+        .game-taxonomy-item[data-active="true"] {
+            display: block;
+        }
+        .game-taxonomy-item a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            position: relative;
+        }
+        .game-taxonomy-item .game-difficulty {
+            position: absolute;
+            top: 0.4rem;
+            right: 0.4rem;
+            z-index: 1;
+            margin-top: 0;
+        }
+        .game-taxonomy-thumb {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #e8e8e8;
+            background: #f5f5f5;
+            transition: box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+        .game-taxonomy-item a:hover .game-taxonomy-thumb {
+            box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+            border-color: #00d1b2;
+        }
+        .game-taxonomy-name {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #363636;
+            line-height: 1.35;
+        }
+        .game-taxonomy-item a:hover .game-taxonomy-name {
+            color: #00d1b2;
+        }
+        .game-category-label {
+            font-size: 0.85rem;
+            color: #7a7a7a;
+            margin-top: 0.25rem;
+        }
+        .game-category-desc-box {
+            margin-bottom: 1rem;
+            padding: 0.75rem 1rem;
+            background: #f8f9fa;
+            border-left: 4px solid #00d1b2;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            color: #363636;
+            line-height: 1.5;
+        }
+        .game-category-desc-box[data-active="false"] {
+            display: none;
+        }
+        .game-difficulty {
+            display: inline-block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 0.35rem 0.65rem;
+            border-radius: 4px;
+            margin-top: 0.35rem;
+            text-transform: uppercase;
+        }
+        .game-difficulty-easy {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        .game-difficulty-medium {
+            background: #fff3e0;
+            color: #e65100;
+        }
+        .game-difficulty-hard {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .video-item {
+            position: relative;
+            width: 100%;
+            padding-bottom: 75%; /* 4:3 aspect ratio */
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .video-item video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* 完整显示视频，非4:3时左右留空（上下填满） */
+        }
+
+        /* VR Comparison - Side by Side (single pair) */
+        .vr-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        /* VR Comparison - 3 pairs (6 videos) */
+        .vr-comparison-multi {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .vr-comparison-item {
+            position: relative;
+            width: 100%;
+            padding-bottom: 75%; /* 4:3 Aspect Ratio (3/4 = 0.75) */
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .vr-comparison-item video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* 完整显示视频，避免截断 */
+        }
+
+        .vr-label {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-weight: 600;
+            z-index: 10;
+        }
+
+        .vr-comparison-title {
+            grid-column: 1 / -1;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #1a1a2e;
+            border-bottom: 2px solid #00d1b2;
+            padding-bottom: 0.25rem;
+            width: fit-content;
+            justify-self: center;
+        }
+
+        .vr-analysis-box {
+            grid-column: 1 / -1;
+            background: #f8f9fa;
+            border-left: 4px solid #00d1b2;
+            padding: 1.25rem;
+            border-radius: 4px;
+            margin-top: 0.5rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+            color: #363636;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .vr-analysis-box h4 {
+            margin-top: 0;
+            margin-bottom: 0.75rem;
+            color: #1a1a2e;
+            font-weight: 700;
+            font-size: 1.05rem;
+        }
+        .vr-analysis-box p {
+            margin-bottom: 0.5rem;
+            line-height: 1.5;
+        }
+        .vr-analysis-box p:last-child {
+            margin-bottom: 0;
+        }
+        .vr-analysis-box strong {
+            color: #2c3e50;
+        }
+        .vr-analysis-quote {
+            background: #eef2f5;
+            padding: 0.75rem 1rem;
+            border-radius: 4px;
+            font-style: italic;
+            margin: 0.75rem 0;
+            color: #4a4a4a;
+            border-left: 3px solid #3273dc;
+        }
+
+        /* Highlight Section - alternates with .section-bg-alt for 浅灰/白 cycle */
+        .highlight-section {
+            background: #fff;
+            padding: 3rem 1.5rem;
+            scroll-margin-top: 56px;
+        }
+        .highlight-section.highlight-section-gray {
+            background: #f5f5f5;
+        }
+
+        .highlight-section .title {
+            color: #1a1a2e;
+        }
+
+        .highlight-section .subtitle {
+            color: #4a4a4a;
+        }
+
+        /* Model Labels */
+        .model-label {
+            position: absolute;
+            bottom: 0.5rem;
+            left: 0.5rem;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            z-index: 10;
+        }
+
+        .model-label.human {
+            background: rgba(255, 107, 107, 0.9);
+        }
+
+        .model-label.model1 {
+            background: rgba(0, 209, 178, 0.9);
+        }
+
+        .model-label.model2 {
+            background: rgba(52, 152, 219, 0.9);
+        }
+
+        .model-label.model3 {
+            background: rgba(155, 89, 182, 0.9);
+        }
+
+        /* Results main table (Table 3) */
+        .results-table-wrap {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            border: 1px solid #e8e8e8;
+            border-radius: 8px;
+            background: #fff;
+        }
+        .results-main-table {
+            width: 100%;
+            min-width: 960px;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+        }
+        .results-main-table th,
+        .results-main-table td {
+            border: 1px solid #e8e8e8;
+            padding: 0.35rem 0.4rem;
+            text-align: center;
+        }
+        .results-main-table th {
+            background: #f5f5f5;
+            font-weight: 600;
+        }
+        .results-main-table thead th:first-child,
+        .results-main-table thead th:nth-child(2),
+        .results-main-table tbody td:first-child,
+        .results-main-table tbody td:nth-child(2) {
+            text-align: left;
+            position: sticky;
+            left: 0;
+            z-index: 1;
+        }
+        .results-main-table thead th:first-child { background: #f5f5f5; }
+        .results-main-table thead th:nth-child(2) { background: #f5f5f5; }
+        .results-main-table tbody td:first-child,
+        .results-main-table tbody td:nth-child(2):not([class*="cell-gain"]):not([class*="cell-drop"]) {
+            background: #fff;
+        }
+        .results-main-table tbody tr:nth-child(even) td:first-child,
+        .results-main-table tbody tr:nth-child(even) td:nth-child(2):not([class*="cell-gain"]):not([class*="cell-drop"]) { background: #fafafa; }
+        .results-main-table .row-baseline th { background: #eee; }
+        .results-main-table .row-section-header td {
+            background: #e8e8e8;
+            font-weight: 600;
+            text-align: center;
+            padding: 0.5rem;
+        }
+        .results-main-table td.cell-model-merge {
+            vertical-align: middle;
+            text-align: center;
+        }
+        /* Green shades: higher = darker (larger gain) */
+        .results-main-table .cell-gain-5  { background: rgba(0, 209, 178, 0.10); }
+        .results-main-table .cell-gain-10 { background: rgba(0, 209, 178, 0.18); }
+        .results-main-table .cell-gain-15 { background: rgba(0, 209, 178, 0.25); }
+        .results-main-table .cell-gain-20 { background: rgba(0, 209, 178, 0.32); }
+        .results-main-table .cell-gain-25 { background: rgba(0, 209, 178, 0.38); }
+        .results-main-table .cell-gain-30 { background: rgba(0, 209, 178, 0.45); }
+        .results-main-table .cell-gain-35 { background: rgba(0, 209, 178, 0.50); }
+        .results-main-table .cell-gain-40 { background: rgba(0, 209, 178, 0.55); }
+        .results-main-table .cell-gain-45 { background: rgba(0, 209, 178, 0.62); }
+        .results-main-table .cell-gain-60 { background: rgba(0, 209, 178, 0.75); }
+        /* Red shades: higher = darker (larger drop) */
+        .results-main-table .cell-drop-5  { background: rgba(255, 107, 107, 0.15); }
+        .results-main-table .cell-drop-15 { background: rgba(255, 107, 107, 0.35); }
+        .results-main-table .cell-bold { font-weight: 700; }
+        .results-main-table caption .cap-green { color: #00997a; font-weight: 600; }
+        .results-main-table caption .cap-red { color: #c62828; font-weight: 600; }
+        .results-main-table caption {
+            caption-side: top;
+            text-align: left;
+            padding: 0.5rem 0;
+            font-size: 0.9rem;
+            color: #363636;
+        }
+
+        /* BibTeX Section */
+        .bibtex-section pre {
+            background: #f5f5f5;
+            padding: 1.25rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 0.9rem;
+        }
+
+        .bibtex-section code {
+            background: transparent;
+            color: #333;
+        }
+
+        .copy-btn {
+            margin-top: 0.75rem;
+        }
+
+        footer.footer {
+            padding: 3rem 1.5rem;
+            background: #fafafa;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .video-grid-5x3 {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(8, 1fr);
+            }
+
+            .video-grid-4x5 {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(10, 1fr);
+            }
+
+        }
+
+        @media (max-width: 768px) {
+            .video-grid-5x3 {
+                grid-template-columns: 1fr;
+                grid-template-rows: repeat(15, 1fr);
+            }
+
+            .video-grid-4x5 {
+                grid-template-columns: 1fr;
+                grid-template-rows: repeat(20, 1fr);
+            }
+
+            .vr-comparison,
+            .vr-comparison-multi {
+                grid-template-columns: 1fr;
+            }
+
+            .vr-comparison-title,
+            .vr-analysis-box {
+                grid-column: 1 / -1;
+            }
+
+            .games-grid-with-headers {
+                grid-template-columns: 1fr;
+            }
+
+            .models-grid-with-headers {
+                grid-template-columns: 1fr;
+            }
+
+            .publication-title {
+                font-size: 1.5rem;
+            }
+
+            .content p {
+                font-size: 1rem;
+            }
+
+            .navbar-logo span {
+                display: none;
+            }
+
+            .navbar-links {
+                gap: 0.1rem;
+            }
+
+            .navbar-link {
+                padding: 0.4rem 0.6rem;
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Jump Navigation Dots */
+        .jump-nav {
+            position: fixed;
+            right: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .jump-nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ccc;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .jump-nav-dot:hover {
+            background: #888;
+            transform: scale(1.2);
+        }
+
+        .jump-nav-dot.active {
+            background: #1a1a2e;
+            transform: scale(1.3);
+        }
+
+        @media (max-width: 1024px) {
+            .jump-nav {
+                display: none;
+            }
+        }
+
+        /* Video Control Buttons */
+        .video-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .video-control-btn {
+            padding: 0.75rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .video-control-btn.play-all {
+            background: #00d1b2;
+            color: white;
+        }
+
+        .video-control-btn.play-all:hover {
+            background: #00b89c;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 209, 178, 0.4);
+        }
+
+        .video-control-btn.stop-all {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .video-control-btn.stop-all:hover {
+            background: #ee5a5a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+        }
+
+        .video-control-btn:active {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Fixed Navigation Bar -->
+    <nav class="navbar-fixed">
+        <div class="navbar-inner">
+            <a href="#" class="navbar-logo">
+                <img src="assets/images/logo.png" alt="GameVerse Logo" onerror="this.style.display='none'">
+                <span>GameVerse</span>
+            </a>
+            <div class="navbar-links">
+                <a href="#abstract" class="navbar-link">Abstract</a>
+                <a href="#method" class="navbar-link">Method</a>
+                <a href="#games-15" class="navbar-link">Evaluation</a>
+                <a href="#models-vs-human" class="navbar-link">Models vs Human</a>
+                <a href="#vr-comparison" class="navbar-link">Reflection Comparison</a>
+                <a href="#results" class="navbar-link">Leaderboard</a>
+                <a href="#bibtex" class="navbar-link">BibTeX</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Jump Navigation Dots -->
+    <div class="jump-nav">
+        <a href="#abstract" class="jump-nav-dot" data-section="abstract"></a>
+        <a href="#method" class="jump-nav-dot" data-section="method"></a>
+        <a href="#games-15" class="jump-nav-dot" data-section="games-15"></a>
+        <a href="#models-vs-human" class="jump-nav-dot" data-section="models-vs-human"></a>
+        <a href="#vr-comparison" class="jump-nav-dot" data-section="vr-comparison"></a>
+        <a href="#results" class="jump-nav-dot" data-section="results"></a>
+        <a href="#bibtex" class="jump-nav-dot" data-section="bibtex"></a>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-body">
+            <div class="container is-max-desktop">
+                <div class="columns is-centered">
+                    <div class="column has-text-centered">
+                        <img src="assets/images/logo.png" alt="GameVerse Logo" class="project-logo" onerror="this.style.display='none'">
+                        <h1 class="title publication-title"><i>GameVerse</i> : Can Vision-Language Models Learn from Video-based Reflection?</h1>
+                        
+                        <div class="is-size-5 publication-authors">
+                            <span class="author-block">
+                                Kuan Zhang<sup>*</sup>,
+                                Dongchen Liu<sup>*</sup>,
+                                Qiyue Zhao,
+                                Jinkun Hou,
+                                Xinran Zhang,
+                                Qinlei Xie,
+                                Miao Liu,
+                                Yiming Li<sup>†</sup>
+                            </span>
+                            <div style="margin-top: 0.5rem; font-size: 0.9rem; color: #666;">
+                                <sup>*</sup>Equal Contribution &nbsp;&nbsp; <sup>†</sup>Corresponding Author
+                            </div>
+                            <div style="margin-top: 0.5rem; font-size: 0.9rem; color: #666;">
+                                College of AI, Tsinghua University, China
+                            </div>
+                        </div>
+
+                        <div class="column has-text-centered">
+                            <div class="publication-links">
+                                <span class="link-block">
+                                    <a target="_blank" href="#" class="external-link button is-normal is-rounded is-dark">
+                                        <span class="icon">
+                                            <i class="fas fa-file-pdf"></i>
+                                        </span>
+                                        <span>Paper</span>
+                                    </a>
+                                </span>
+
+                                <span class="link-block">
+                                    <a target="_blank" href="#" class="external-link button is-normal is-rounded is-dark">
+                                        <span class="icon">
+                                            <i class="fab fa-github"></i>
+                                        </span>
+                                        <span>Code</span>
+                                    </a>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Abstract Section -->
+    <section class="section section-bg-alt" id="abstract">
+        <div class="container is-max-desktop">
+            <div class="columns is-centered has-text-centered">
+                <div class="column">
+                    <h2 class="title is-3">Abstract</h2>
+                    <div class="content has-text-justified">
+                        <p>
+                            Human gameplay is a visually grounded interaction loop in which players act, 
+                            reflect on failures, and watch tutorials to refine strategies. Can Vision-Language Models (VLMs) also learn from 
+                            video-based reflection? We present <b>GameVerse</b>, a comprehensive video game benchmark that enables a <i>reflective 
+                                visual interaction loop</i>. Moving beyond traditional <i><b>fire-and-forget</b></i> evaluations, it uses a novel 
+                                <i><b>reflect-and-retry</b></i> paradigm to assess how VLMs internalize visual experience and improve policies. 
+                                To facilitate systematic and scalable evaluation, we also introduce a <i>cognitive hierarchical taxonomy</i> spanning
+                                 15 globally popular games, <i>dual action space</i> for both semantic and GUI control, and <i>milestone 
+                                    evaluation</i> using advanced VLMs to quantify progress. Our experiments show that VLMs succeed in simple tasks, 
+                                    but struggle to generalize in complex games. Meanwhile, they benefit from video-based reflection in varied 
+                                    settings, and perform best by combining failure trajectories and expert tutorials—a 
+                                    <i>training-free</i> analogue to reinforcement learning (RL) plus supervised fine-tuning (SFT).
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="figure-container" style="margin: 2rem 0;">
+                <img src="assets/images/framework.png" alt="GameVerse Framework" style="width: 100%; border-radius: 8px; border: 1px solid #eee;" onerror="this.style.display='none'">
+                <p class="figure-caption" style="text-align: center; font-size: 0.95rem; color: #666; margin-top: 0.75rem;">
+                    <b>Figure 1.</b> Overview of GameVerse, which effectively probes the capability boundaries of VLMs in video game worlds. GameVerse
+                    supports dual action space, enables human-like reflection by integrating failure and tutorial videos, and delivers process score.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Method Section -->
+    <section class="section" id="method">
+        <div class="container is-max-widescreen">
+            <h2 class="title is-3">Method</h2>    
+
+
+            <div class="content has-text-justified">
+                <h3 class="subtitle is-4" style="margin-top: 1.5rem; margin-bottom: 1rem;">Game Taxonomy</h3>
+                <p>
+                    We construct a cognitive hierarchical taxonomy based on three cognitive axes: <i>Image Structure</i> (Grid/2D/3D), 
+                    <i>Temporal Dynamics</i> (Real-time/Non-Real-time) and <i>Causal Linearity</i> (Linear/Non-linear), 
+                    resulting in five distinct categories. GameVerse selects 15 globally popular video games distributed across these categories, with easy, medium, and hard difficulty tiers per category.
+                </p>
+
+                <ul class="game-category-tabs" id="game-category-tabs" role="tablist">
+                        <li class="game-category-tab active" role="tab" data-category="markov-grid" aria-selected="true">Markov Grid <span class="tab-count">(3)</span></li>
+                        <li class="game-category-tab" role="tab" data-category="non-realtime-linear" aria-selected="false">Non-Real-time Linear <span class="tab-count">(3)</span></li>
+                        <li class="game-category-tab" role="tab" data-category="non-realtime-nonlinear" aria-selected="false">Non-Real-time Non-linear <span class="tab-count">(3)</span></li>
+                        <li class="game-category-tab" role="tab" data-category="realtime-linear" aria-selected="false">Real-time Linear <span class="tab-count">(3)</span></li>
+                        <li class="game-category-tab" role="tab" data-category="realtime-nonlinear" aria-selected="false">Real-time Non-linear <span class="tab-count">(3)</span></li>
+                </ul>
+                    <div class="game-category-desc-box" id="game-category-desc-markov-grid" data-active="true">Turn-based discrete state transitions with full observability.</div>
+                    <div class="game-category-desc-box" id="game-category-desc-non-realtime-linear" data-active="false">Turn-based progression with a fixed narrative path.</div>
+                    <div class="game-category-desc-box" id="game-category-desc-non-realtime-nonlinear" data-active="false">Turn-based mechanics with open-ended goals.</div>
+                    <div class="game-category-desc-box" id="game-category-desc-realtime-linear" data-active="false">Continuous time constraints with singular objectives.</div>
+                    <div class="game-category-desc-box" id="game-category-desc-realtime-nonlinear" data-active="false">Continuous dynamics with complex, branching objectives.</div>
+                    <ul class="game-taxonomy-grid" id="game-taxonomy-grid">
+                        <li class="game-taxonomy-item" data-category="markov-grid" data-active="true">
+                            <a href="#games-15" title="Tic-Tac-Toe">
+                                <img class="game-taxonomy-thumb" src="assets/images/icons/tictactoe.jpg" alt="Tic-Tac-Toe">
+                                <span class="game-difficulty game-difficulty-easy">Easy</span>
+                                <div class="game-taxonomy-name">Tic-Tac-Toe</div>
+                                <div class="game-category-label">Markov Grid</div>
+                            </a>
+                        </li>
+                        <li class="game-taxonomy-item" data-category="markov-grid" data-active="true">
+                            <a href="#games-15" title="Baba Is You">
+                                <img class="game-taxonomy-thumb" src="assets/images/icons/babaisyou.png" alt="Baba Is You">
+                                <span class="game-difficulty game-difficulty-medium">Medium</span>
+                                <div class="game-taxonomy-name">Baba Is You</div>
+                                <div class="game-category-label">Markov Grid</div>
+                            </a>
+                        </li>
+                        <li class="game-taxonomy-item" data-category="markov-grid" data-active="true">
+                            <a href="#games-15" title="2048">
+                                <img class="game-taxonomy-thumb" src="assets/images/icons/2048.png" alt="2048">
+                                <span class="game-difficulty game-difficulty-hard">Hard</span>
+                                <div class="game-taxonomy-name">2048</div>
+                                <div class="game-category-label">Markov Grid</div>
+                            </a>
+                        </li>
+                        <li class="game-taxonomy-item" data-category="non-realtime-linear" data-active="false">
+                            <a href="#games-15" title="Maze">
+                                <img class="game-taxonomy-thumb" src="assets/images/icons/maze.jpg" alt="Maze">
+                                <span class="game-difficulty game-difficulty-easy">Easy</span>
+                                <div class="game-taxonomy-name">Maze</div>
+                                <div class="game-category-label">Non-Real-time Linear</div>
+                            </a>
+                        </li>
+                        <li class="game-taxonomy-item" data-category="non-realtime-linear" data-active="false">
+                            <a href="#games-15" title="Angry Birds">
+                                <img class="game-taxonomy-thumb" src="assets/images/icons/angrybirds.png" alt="Angry Birds">
+                                <span class="game-difficulty game-difficulty-medium">Medium</span>
+                                <div class="game-taxonomy-name">Angry Birds</div>
+                                <div class="game-category-label">Non-Real-time Linear</div>
+                            </a>
+                        </li>
+                        <li class="game-taxonomy-item" data-category="non-realtime-linear" data-active="false">
+                            <a href="#games-15" title="Slay the Spire">
+                                <img class="game-taxonomy-thumb" src="assets/images/icons/slaythespire.png" alt="Slay the Spire">
+                                <span class="game-difficulty game-difficulty-hard">Hard</span>
+                                <div class="game-taxonomy-name">Slay the Spire</div>
+                                <div class="game-category-label">Non-Real-time Linear</div>
+                            </a>
+                        </li>
+                        <li class="game-taxonomy-item" data-category="non-realtime-nonlinear" data-active="false">
+                            <a href="#games-15" title="Ace Attorney">
+                                <img class="game-taxonomy-thumb" src="assets/images/icons/aceattorney.png" alt="Ace Attorney">
+                                <span class="game-difficulty game-difficulty-easy">Easy</span>
+                                <div class="game-taxonomy-name">Ace Attorney</div>
+                                <div class="game-category-label">Non-Real-time Non-linear</div>
+                            </a>
+                        </li>
+                        <li class="game-taxonomy-item" data-category="non-realtime-nonlinear" data-active="false">
+                            <a href="#games-15" title="Civilization VI">
+                                <img class="game-taxonomy-thumb" src="assets/images/icons/civilization.png" alt="Civilization VI">
+                                <span class="game-difficulty game-difficulty-medium">Medium</span>
+                                <div class="game-taxonomy-name">Civilization VI</div>
+                                <div class="game-category-label">Non-Real-time Non-linear</div>
+                            </a>
+                        </li>
+                        <li class="game-taxonomy-item" data-category="non-realtime-nonlinear" data-active="false">
+                            <a href="#games-15" title="Scene Investigators">
+                                <img class="game-taxonomy-thumb" src="assets/images/icons/sceneinvestigators.png" alt="Scene Investigators">
+                                <span class="game-difficulty game-difficulty-hard">Hard</span>
+                                <div class="game-taxonomy-name">Scene Investigators</div>
+                                <div class="game-category-label">Non-Real-time Non-linear</div>
+                            </a>
+                        </li>
+                        <li class="game-taxonomy-item" data-category="realtime-linear" data-active="false">
+                            <a href="#games-15" title="Snake">
+                                <img class="game-taxonomy-thumb" src="assets/images/icons/snake.png" alt="Snake">
+                                <span class="game-difficulty game-difficulty-easy">Easy</span>
+                                <div class="game-taxonomy-name">Snake</div>
+                                <div class="game-category-label">Real-time Linear</div>
+                            </a>
+                        </li>
+                        <li class="game-taxonomy-item" data-category="realtime-linear" data-active="false">
+                            <a href="#games-15" title="Plants vs. Zombies">
+                                <img class="game-taxonomy-thumb" src="assets/images/icons/plantvszombie.jpg" alt="Plants vs. Zombies">
+                                <span class="game-difficulty game-difficulty-medium">Medium</span>
+                                <div class="game-taxonomy-name">Plants vs. Zombies</div>
+                                <div class="game-category-label">Real-time Linear</div>
+                            </a>
+                        </li>
+                        <li class="game-taxonomy-item" data-category="realtime-linear" data-active="false">
+                            <a href="#games-15" title="Forza Horizon 5">
+                                <img class="game-taxonomy-thumb" src="assets/images/icons/forzahorizonVI.png" alt="Forza Horizon 5">
+                                <span class="game-difficulty game-difficulty-hard">Hard</span>
+                                <div class="game-taxonomy-name">Forza Horizon 5</div>
+                                <div class="game-category-label">Real-time Linear</div>
+                            </a>
+                        </li>
+                        <li class="game-taxonomy-item" data-category="realtime-nonlinear" data-active="false">
+                            <a href="#games-15" title="Mini Metro">
+                                <img class="game-taxonomy-thumb" src="assets/images/icons/minimetro.jpg" alt="Mini Metro">
+                                <span class="game-difficulty game-difficulty-easy">Easy</span>
+                                <div class="game-taxonomy-name">Mini Metro</div>
+                                <div class="game-category-label">Real-time Non-linear</div>
+                            </a>
+                        </li>
+                        <li class="game-taxonomy-item" data-category="realtime-nonlinear" data-active="false">
+                            <a href="#games-15" title="Genshin Impact">
+                                <img class="game-taxonomy-thumb" src="assets/images/icons/genshinimpact.png" alt="Genshin Impact">
+                                <span class="game-difficulty game-difficulty-medium">Medium</span>
+                                <div class="game-taxonomy-name">Genshin Impact</div>
+                                <div class="game-category-label">Real-time Non-linear</div>
+                            </a>
+                        </li>
+                        <li class="game-taxonomy-item" data-category="realtime-nonlinear" data-active="false">
+                            <a href="#games-15" title="Red Dead Redemption 2">
+                                <img class="game-taxonomy-thumb" src="assets/images/icons/rdr2.png" alt="Red Dead Redemption 2">
+                                <span class="game-difficulty game-difficulty-hard">Hard</span>
+                                <div class="game-taxonomy-name">Red Dead Redemption 2</div>
+                                <div class="game-category-label">Real-time Non-linear</div>
+                            </a>
+                        </li>
+                    </ul>
+
+
+                <h3 class="subtitle is-4" style="margin-top: 1.5rem; margin-bottom: 1rem;">Dual Action Space</h3>
+                <p>
+                    To assess both high-level reasoning and low-level control, we define two action modes: <b>Semantic Actions</b>: 
+                    High-level semantic actions (e.g., "Position(1,3)"), testing the agent's perception and reasoning. <b>GUI Actions</b>: 
+                    Low-level GUI operations (e.g., KeyPress(A)), testing end-to-end precise visual control.
+                </p>
+
+                <h3 class="subtitle is-4" style="margin-top: 1.5rem; margin-bottom: 1rem;">Video-Based Reflection and Learning</h3>
+                <p>
+                    The paradigm consists of four steps: <b>(1) Trial and Failure.</b> The agent first attempts the game task. If it fails, 
+                    the system records the sequence of visual observations leading to the negative outcome. <b>(2) Expert Demonstration Retrieval.</b> 
+                    The system retrieves an expert walkthrough from online gameplay videos. <b>(3) Visual Reflection.</b> The VLM acts as a reflector. 
+                    It takes both its failure trajectory and the expert demonstration as visual input. The model is prompted to contrast the two, 
+                    analyzing the divergence in strategy and execution, and generating condensed empirical reflections. <b>(4) Policy Update.</b> 
+                    These reflections are injected into the agent's system prompt, enabling it to re-attempt the task with the new context.
+                </p>
+
+                <h3 class="subtitle is-4" style="margin-top: 1.5rem; margin-bottom: 1rem;">Scalable Evaluation Protocol</h3>
+                <p>
+                    We introduce a milestone scoring pipeline that leverages advanced VLMs to quantify agent progress purely from pixels. <b>Phase 1: Offline Milestone Detection.</b> We employ an advanced VLM to watch expert walkthrough videos and extract structured milestone references. <b>Phase 2: Online Scoring.</b> Following gameplay, an advanced VLM analyzes the playthrough video, comparing the agent's trajectory against the reference milestones to calculate a process-oriented score. This method scales easily to closed-source commercial games where internal state information is inaccessible.
+                </p>
+            </div>
+
+            <div class="figure-container" style="margin: 2rem 0;">
+                <img src="assets/images/arch.png" alt="GameVerse Architecture" style="width: 100%; border-radius: 8px; border: 1px solid #eee;" onerror="this.style.display='none'">
+                <p class="figure-caption" style="text-align: center; font-size: 0.95rem; color: #666; margin-top: 0.75rem;">
+                    9 milestones are extracted by Gemini-3-pro in th walkthrough video of Ace Attorney.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 15 Games Comparison Section -->
+    <section class="section section-bg-alt" id="games-15">
+        <div class="container is-max-desktop">
+            <h2 class="title is-3">Evaluation</h2>
+            <div class="content has-text-justified">
+                <p>
+                    We demonstrate VLM's performance in GameVerse across 15 globally popular video games. Each video shows gameplay trajectories captured in real-time.
+                    Videos are arranged in 5 rows (Cognitive Tiers) and 3 columns (Difficulty Tiers). The video has been accelerated.
+                </p>
+            </div>
+
+            <div class="video-controls">
+                <button class="video-control-btn play-all" onclick="playAllVideos('games-grid')">
+                    <i class="fas fa-play"></i>
+                    <span>Play All Games</span>
+                </button>
+                <button class="video-control-btn stop-all" onclick="stopAllVideos('games-grid')">
+                    <i class="fas fa-stop"></i>
+                    <span>Stop All</span>
+                </button>
+            </div>
+
+            <div class="games-grid-with-headers" id="games-grid">
+                <!-- Column headers (Easy/Medium/Hard) + 15 videos filled by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Models vs Human Section -->
+    <section class="highlight-section" id="models-vs-human">
+        <div class="container is-max-desktop">
+
+                <h2 class="title is-3">
+                    <i class="fas fa-users" style="margin-right: 0.5rem;"></i>
+                    Models vs. Human Comparison
+                </h2>
+                <p class="subtitle is-5">Comparing 2 VLM models and 1 human player across 5 games: <b>Baba Is You, Angry Birds, Scene Investigators, 
+                    Plants vs. Zombies, Red Dead Redemption 2.</b>
+                    </p>
+
+            <div class="video-controls">
+                <button class="video-control-btn play-all" onclick="playAllVideos('models-grid')">
+                    <i class="fas fa-play"></i>
+                    <span>Play All Comparisons</span>
+                </button>
+                <button class="video-control-btn stop-all" onclick="stopAllVideos('models-grid')">
+                    <i class="fas fa-stop"></i>
+                    <span>Stop All</span>
+                </button>
+            </div>
+
+            <div class="models-grid-with-headers" id="models-grid">
+                <!-- Column headers (Model 1/2, Human) + 15 videos filled by JavaScript -->
+            </div>
+
+            <div class="has-text-centered" style="margin-top: 2rem;">
+                <div style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap;">
+                    <span style="color: #363636; display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: rgba(0, 209, 178, 0.9);"></span>
+                        Qwen3-VL-32B-instruct
+                    </span>
+                    <span style="color: #363636; display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: rgba(52, 152, 219, 0.9);"></span>
+                        Gemini-2.5-Pro
+                    </span>
+                    <span style="color: #363636; display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: rgba(255, 107, 107, 0.9);"></span>
+                        Human
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VR Comparison Section -->
+    <section class="section section-bg-alt" id="vr-comparison">
+        <div class="container is-max-desktop">
+            <h2 class="title is-3">Video-based Reflection Comparison</h2>
+            <div class="content has-text-justified">
+                <p>
+                    Comparison of gameplay <b>before</b> and <b>after</b> Video-based Reflection (VR) implementation. 
+                    The video-based reflection paradigm enables agents to refine gameplay by observing failures and expert tutorials. 
+                    The improvement demonstrates how VLMs can learn from visual experience and improve policies through the reflect-and-retry paradigm.
+                    Representative comparison games: <b>Tic-Tac-Toe</b>, <b>Angry Birds</b>, <b>Plants vs. Zombies</b>.
+                </p>
+            </div>
+
+            <div class="video-controls">
+                <button class="video-control-btn play-all" onclick="playAllVideos('vr-comparison-container')">
+                    <i class="fas fa-play"></i>
+                    <span>Play All Videos</span>
+                </button>
+                <button class="video-control-btn stop-all" onclick="stopAllVideos('vr-comparison-container')">
+                    <i class="fas fa-stop"></i>
+                    <span>Stop All</span>
+                </button>
+            </div>
+
+            <div class="vr-comparison-multi" id="vr-comparison-container">
+                <div class="vr-comparison-title">Tic-Tac-Toe</div>
+                <div class="vr-comparison-item">
+                    <div class="vr-label">Before VR</div>
+                    <video controls muted playsinline>
+                        <source src="assets/videos/vr_comparison/TicTacToe_before.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="vr-comparison-item">
+                    <div class="vr-label">After VR</div>
+                    <video controls muted playsinline>
+                        <source src="assets/videos/vr_comparison/TicTacToe_after.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="vr-analysis-box">
+                    <h4>Case Study: Defensive Line Blocking (Qwen3-VL-32B)</h4>
+                    <p><strong>Strategy Evolution:</strong> Qwen3-VL-32B transitioned from a purely offensive playstyle to a threat-aware defensive strategy. When facing a column-1 threat (X at A1 + C1), it shifted from placing an aggressive C3 to strategically blocking with B1, successfully forcing a draw against a Minimax AI opponent.</p>
+                    <div class="vr-analysis-quote">
+                        <strong>Key Insight (Prior Knowledge):</strong> "Aim for a draw by mirroring their moves or blocking their potential lines. Avoid leaving open lines without countermeasures."
+                    </div>
+                    <p><strong>Analysis:</strong> By internalizing the concepts of "blocking potential lines" and "countering open threats," Qwen3-VL-32B successfully identified the opponent's vertical winning condition. This shift prioritized structural defense over expansion, effectively neutralizing a high-risk threat into a stable draw.</p>
+                </div>
+
+                <div class="vr-comparison-title">Angry Birds</div>
+                <div class="vr-comparison-item">
+                    <div class="vr-label">Before VR</div>
+                    <video controls muted playsinline>
+                        <source src="assets/videos/vr_comparison/AngryBirds_before.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="vr-comparison-item">
+                    <div class="vr-label">After VR</div>
+                    <video controls muted playsinline>
+                        <source src="assets/videos/vr_comparison/AngryBirds_after.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="vr-analysis-box">
+                    <h4>Case Study: Strategic Trajectory Planning (GPT-4o-mini)</h4>
+                    <p><strong>Strategy Evolution:</strong> GPT-4o-mini transitioned from inefficient direct fire to a sophisticated parabolic trajectory strategy. Instead of repeatedly striking the frontal obstacle, it now aims for the wooden support structure behind the mound, leveraging gravity to trigger a structural collapse.</p>
+                    <div class="vr-analysis-quote">
+                        <strong>Key Insight (Prior Knowledge):</strong> "Use a slightly upward angle to allow the bird to arc over obstacles and strike the structure at its weakest point."
+                    </div>
+                    <p><strong>Analysis:</strong> By internalizing the concept of "arcing over obstacles," GPT-4o-mini successfully bypassed terrain constraints and identified the structural vulnerability, significantly improving overall task efficiency.</p>
+                </div>
+
+                <div class="vr-comparison-title">Plants vs. Zombies</div>
+                <div class="vr-comparison-item">
+                    <div class="vr-label">Before VR</div>
+                    <video controls muted playsinline>
+                        <source src="assets/videos/vr_comparison/pvz_before.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="vr-comparison-item">
+                    <div class="vr-label">After VR</div>
+                    <video controls muted playsinline>
+                        <source src="assets/videos/vr_comparison/pvz_after.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <div class="vr-analysis-box">
+                    <h4>Case Study: Plant Placement Correction (GPT-4o-mini)</h4>
+                    <p><strong>Strategy Evolution:</strong> GPT-4o-mini transitioned from repeatedly dragging plants to invalid positions to correctly identifying plantable tiles. Before reflection, the model kept attempting to place a second Peashooter on non-plantable spots, wasting all available steps without ever starting the actual battle. After reflection, it successfully placed the plant on a valid tile, allowing the game to proceed normally.</p>
+                    <div class="vr-analysis-quote">
+                        <strong>Key Insight (Prior Knowledge):</strong> "Space plants strategically: Place Peashooters with at least one tile gap between them to allow room for additional defensive plants like Wall-nuts or more Peashooters later."
+                    </div>
+                    <p><strong>Analysis:</strong> By internalizing the concept of "strategic tile selection," GPT-4o-mini shifted its attention from blindly dragging plants to consciously identifying valid, unoccupied tiles on the lawn, resolving the repeated placement failure and enabling successful game progression.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results Section -->
+    <section class="section" id="results">
+        <div class="container is-max-widescreen">
+            <h2 class="title is-3">Leaderboard and Results</h2>
+            <div class="content has-text-justified">
+                <p>
+                    We evaluate the performance of 7 VLMs (Qwen3-VL-8B/32B, GPT-4o/4o-mini, Gemini-2.5-Pro/Flash, Seed-1.8) across 15 GameVerse games, comparing them against Random, Human Rookie, and Human Expert baselines.
+                </p>
+
+                <div class="results-table-wrap">
+                    <table class="results-main-table">
+                        <caption><b>Table 1.</b> Performance of 7 VLMs on 15 GameVerse games in GUI mode, with and without Video-based Reflection (VR). <span class="cap-green">Green</span>/<span class="cap-red">red</span> cells indicate performance gain/drop after applying VR (darker = larger change). <b>Bold</b> = top across models and human baselines.</caption>
+                        <thead>
+                            <tr>
+                                <th rowspan="2">Model</th>
+                                <th rowspan="2">VR</th>
+                                <th colspan="3">Markov Grid</th>
+                                <th colspan="3">Non-RT Linear</th>
+                                <th colspan="3">Non-RT Non-Linear</th>
+                                <th colspan="3">Real-time Linear</th>
+                                <th colspan="3">Real-time Non-Linear</th>
+                                <th rowspan="2">Avg. Rank</th>
+                            </tr>
+                            <tr>
+                                <th>TicTacToe</th><th>Baba</th><th>2048</th>
+                                <th>Maze</th><th>AngryBird</th><th>Slay</th>
+                                <th>Attorney</th><th>Civilization</th><th>Scene</th>
+                                <th>Snake</th><th>PvZ</th><th>Horizon</th>
+                                <th>Metro</th><th>Genshin</th><th>RDR2</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="row-section-header"><td colspan="18">Three Baselines</td></tr>
+                            <tr class="row-baseline"><td>Random</td><td>—</td><td>26.3</td><td>10.8</td><td>1.2</td><td>21.3</td><td>0.0</td><td>0.0</td><td>0.0</td><td>0.0</td><td>0.0</td><td>7.0</td><td>0.0</td><td>0.0</td><td>0.0</td><td>0.0</td><td>0.0</td><td>16.5</td></tr>
+                            <tr class="row-baseline"><td>Human Expert</td><td>—</td><td>98.9</td><td class="cell-bold">100</td><td class="cell-bold">77.1</td><td class="cell-bold">100</td><td class="cell-bold">85.3</td><td class="cell-bold">99.4</td><td class="cell-bold">100</td><td class="cell-bold">100</td><td class="cell-bold">94.2</td><td class="cell-bold">100</td><td class="cell-bold">100</td><td class="cell-bold">98.1</td><td class="cell-bold">100</td><td class="cell-bold">100</td><td class="cell-bold">100</td><td class="cell-bold">1.6</td></tr>
+                            <tr><td class="cell-model-merge" rowspan="2">Human Rookie</td><td>No</td><td>85.1</td><td>83.4</td><td>15.9</td><td>99.3</td><td>46.4</td><td>34.2</td><td>77.4</td><td>54.1</td><td>70.4</td><td>93.2</td><td>89.3</td><td>73.9</td><td>91.2</td><td>63.3</td><td>58.4</td><td>4.1</td></tr>
+                            <tr><td>Yes</td><td class="cell-gain-40 cell-bold">99.4</td><td class="cell-gain-40 cell-bold">100</td><td class="cell-gain-60">47.3</td><td class="cell-gain-15 cell-bold">100</td><td class="cell-gain-60">74.2</td><td class="cell-gain-60">81.3</td><td class="cell-gain-60 cell-bold">100</td><td class="cell-gain-60">96.4</td><td class="cell-gain-60">90.1</td><td class="cell-gain-40 cell-bold">100</td><td class="cell-gain-40">97.9</td><td class="cell-gain-40">85.3</td><td class="cell-gain-40">98.4</td><td class="cell-gain-60">88.2</td><td class="cell-gain-60">83.1</td><td class="cell-gain-60">2.2</td></tr>
+                            <tr class="row-section-header"><td colspan="18">Seven Vision-Language Models</td></tr>
+                            <tr><td class="cell-model-merge" rowspan="2">Qwen3-VL-8B</td><td>No</td><td>53.3</td><td>60.0</td><td>4.4</td><td>80.3</td><td>19.6</td><td>11.7</td><td>7.1</td><td>0.0</td><td>6.3</td><td>2.2</td><td>33.4</td><td>3.2</td><td>7.8</td><td>14.3</td><td>7.2</td><td>12.4</td></tr>
+                            <tr><td>Yes</td><td class="cell-drop-5">51.8</td><td class="cell-gain-40">70.4</td><td class="cell-gain-10">5.1</td><td class="cell-gain-20">89.4</td><td class="cell-gain-40">31.2</td><td class="cell-drop-15">7.4</td><td class="cell-gain-40">26.1</td><td>0.0</td><td>6.3</td><td class="cell-drop-5">0.0</td><td class="cell-gain-40">51.3</td><td>3.2</td><td class="cell-gain-10">8.3</td><td>14.3</td><td>7.2</td><td class="cell-gain-25">11.6</td></tr>
+                            <tr><td class="cell-model-merge" rowspan="2">Qwen3-VL-32B</td><td>No</td><td>70.6</td><td>73.3</td><td>6.4</td><td class="cell-bold">100</td><td>41.6</td><td>8.2</td><td>17.3</td><td>8.3</td><td class="cell-bold">8.3</td><td>42.6</td><td>41.2</td><td>3.2</td><td>5.4</td><td>14.3</td><td>7.2</td><td>9.5</td></tr>
+                            <tr><td>Yes</td><td class="cell-drop-15">63.1</td><td class="cell-gain-40 cell-bold">80.0</td><td class="cell-drop-5">6.1</td><td class="cell-bold">100</td><td class="cell-gain-60 cell-bold">59.4</td><td class="cell-gain-20">11.3</td><td class="cell-gain-60">37.2</td><td>8.3</td><td class="cell-bold">8.3</td><td class="cell-drop-15">33.4</td><td class="cell-gain-40">48.3</td><td>3.2</td><td class="cell-gain-40">11.2</td><td>14.3</td><td class="cell-gain-20">10.0</td><td class="cell-gain-60">7.8</td></tr>
+                            <tr><td class="cell-model-merge" rowspan="2">GPT-4o-mini</td><td>No</td><td>34.4</td><td>60.0</td><td>1.3</td><td>77.1</td><td>16.7</td><td>2.0</td><td>0.0</td><td>0.0</td><td>3.2</td><td>0.0</td><td>27.6</td><td>3.2</td><td>4.2</td><td>14.3</td><td>10.0</td><td>14.1</td></tr>
+                            <tr><td>Yes</td><td class="cell-gain-40">43.2</td><td class="cell-gain-40">68.3</td><td class="cell-gain-10">1.4</td><td class="cell-gain-40">91.3</td><td class="cell-drop-5">13.3</td><td>2.0</td><td>0.0</td><td>0.0</td><td>3.2</td><td>0.0</td><td class="cell-drop-15">22.4</td><td>3.2</td><td class="cell-gain-20">7.1</td><td>14.3</td><td>10.0</td><td class="cell-gain-15">13.6</td></tr>
+                            <tr><td class="cell-model-merge" rowspan="2">GPT-4o</td><td>No</td><td>58.6</td><td>60.9</td><td>3.8</td><td>80.2</td><td>14.3</td><td>2.0</td><td>18.2</td><td>0.0</td><td>0.0</td><td>0.0</td><td>32.2</td><td>2.4</td><td>11.2</td><td>14.3</td><td>10.0</td><td>13.3</td></tr>
+                            <tr><td>Yes</td><td class="cell-gain-40">64.2</td><td class="cell-drop-5">60.0</td><td class="cell-drop-5">3.4</td><td class="cell-gain-30">85.1</td><td class="cell-gain-10">15.4</td><td>2.0</td><td class="cell-gain-60">33.3</td><td>0.0</td><td>0.0</td><td>0.0</td><td class="cell-gain-30">36.4</td><td class="cell-gain-10">3.2</td><td class="cell-gain-25">14.3</td><td>14.3</td><td>10.0</td><td class="cell-gain-25">12.3</td></tr>
+                            <tr><td class="cell-model-merge" rowspan="2">Seed-1.8</td><td>No</td><td>92.3</td><td class="cell-bold">80.0</td><td>9.1</td><td>87.8</td><td>29.4</td><td class="cell-bold">39.6</td><td>33.3</td><td class="cell-bold">22.2</td><td>3.2</td><td>7.2</td><td>26.1</td><td>5.4</td><td>1.3</td><td>14.3</td><td>10.0</td><td>9.3</td></tr>
+                            <tr><td>Yes</td><td class="cell-gain-40 cell-bold">100</td><td class="cell-bold">80.0</td><td class="cell-gain-60">18.2</td><td class="cell-gain-40 cell-bold">100</td><td class="cell-gain-60">57.2</td><td class="cell-drop-15">28.4</td><td class="cell-gain-60 cell-bold">59.3</td><td class="cell-drop-5">19.5</td><td class="cell-gain-25 cell-bold">8.3</td><td class="cell-gain-25">10.4</td><td class="cell-drop-5">22.1</td><td class="cell-drop-5">2.4</td><td class="cell-gain-10">1.4</td><td>14.3</td><td class="cell-drop-5">7.2</td><td class="cell-gain-45">8.4</td></tr>
+                            <tr><td class="cell-model-merge" rowspan="2">Gemini-2.5-Flash</td><td>No</td><td>88.2</td><td class="cell-bold">80.0</td><td>7.8</td><td class="cell-bold">100</td><td>9.4</td><td>2.0</td><td>33.3</td><td>0.0</td><td>3.2</td><td>20.4</td><td>51.1</td><td>5.4</td><td>14.6</td><td>14.3</td><td>10.0</td><td>9.3</td></tr>
+                            <tr><td>Yes</td><td class="cell-gain-40">95.1</td><td class="cell-bold">80.0</td><td class="cell-gain-35">11.4</td><td class="cell-bold">100</td><td class="cell-gain-10">10.2</td><td>2.0</td><td class="cell-drop-5">29.3</td><td>0.0</td><td class="cell-gain-20 cell-bold">8.3</td><td class="cell-drop-15">10.4</td><td class="cell-gain-25 cell-bold">55.3</td><td>5.4</td><td class="cell-gain-25 cell-bold">19.1</td><td>14.3</td><td class="cell-gain-25 cell-bold">13.4</td><td class="cell-gain-45">8.1</td></tr>
+                            <tr><td class="cell-model-merge" rowspan="2">Gemini-2.5-Pro</td><td>No</td><td>90.0</td><td class="cell-bold">80.0</td><td>13.2</td><td class="cell-bold">100</td><td>32.7</td><td>4.4</td><td>37.2</td><td>0.0</td><td>0.0</td><td>24.2</td><td>33.4</td><td>3.2</td><td>11.3</td><td>14.3</td><td>10.0</td><td>9.2</td></tr>
+                            <tr><td>Yes</td><td class="cell-gain-40 cell-bold">100</td><td class="cell-bold">80.0</td><td class="cell-gain-60 cell-bold">26.4</td><td class="cell-bold">100</td><td class="cell-gain-45">42.2</td><td class="cell-gain-25">7.9</td><td class="cell-gain-40">48.3</td><td>0.0</td><td>0.0</td><td class="cell-gain-60 cell-bold">68.4</td><td class="cell-drop-5">30.3</td><td class="cell-gain-25 cell-bold">5.4</td><td class="cell-gain-40">18.2</td><td>14.3</td><td>10.0</td><td class="cell-gain-60">7.5</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="subtitle is-4" style="margin-top: 1.5rem; margin-bottom: 1rem;">Key Findings</h3>
+                <p>
+                    <b>Performance Hierarchy:</b> <b>Gemini-2.5-Pro</b> achieves the highest average ranking (7.5/9.2) among all VLMs, followed by Gemini-2.5-Flash (8.1/9.3), Gemini-2.5-Pro (8.4/9.3), and Qwen3-VL-32B (7.8/9.5).
+                </p>
+                <p>
+                    <b>The Rich-Get-Richer Effect:</b> Reflection generally yields improvements, but its efficacy is non-uniform. Gains scale positively with model capability (Gemini-2.5-Pro improves 6.47% vs. GPT-4o-mini with 1.60%) and negatively with cognitive complexity (dropping from 4.4% in Non-Real-time to 1.7% in Real-time).
+                </p>
+                <p>
+                    <b>The Generalization Gap:</b> Human players demonstrate remarkable generalization across all game types, while VLM agents exhibit severe degradation as complexity increases. In Easy games like Tic-Tac-Toe, Gemini-2.5-Pro achieves perfect scores (100), matching human expert baselines (98.9). In Hard games like Scene or RDR 2, model performance collapses to 0, falling short of human rookie (58.4~70.4).
+                </p>
+                <p>
+                    <b>The Knowing-Doing Gap:</b> Model averages 50.5 in semantic mode, consistently outperforming the GUI mode average of 33.5. While current VLMs possess strong reasoning capabilities for high-level planning, they still struggle with the visual grounding required to translate these plans into precise pixel coordinates.
+                </p>
+                <p>
+                    <b>Video-Based Reflection Benefits:</b> VLMs benefit from video-based reflection in varied settings, and perform best by combining failure trajectories and expert tutorials—a training-free analogue to reinforcement learning (RL) plus supervised fine-tuning (SFT).
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- BibTeX Section -->
+    <section class="section section-bg-alt bibtex-section" id="bibtex">
+        <div class="container is-max-widescreen content">
+            <h2 class="title is-3">BibTeX</h2>
+            <div style="position: relative;">
+                <pre><code id="bibtex-content">@article{gameverse2026,
+      title={GameVerse: Can Vision-Language Models Learn from Video-based Reflection?}, 
+      author={Zhang, Kuan and Liu, Dongchen and Zhao, Qiyue and Hou, Jinkun and Zhang, Xinran and Xie, Qinlei and Liu, Miao and Li, Yiming},
+      journal={arXiv},
+      year={2026},
+      url={}
+}</code></pre>
+                <button class="button is-small is-dark copy-btn" 
+                        style="position: absolute; top: 10px; right: 10px;" 
+                        onclick="copyBibtex()">
+                    <span class="icon"><i class="fas fa-copy"></i></span>
+                    <span>Copy</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="columns is-centered">
+                <div class="column has-text-centered">
+                    <div class="content">
+                        <figure class="image is-inline-block">
+                            <img src="assets/images/logo.png" alt="GameVerse Logo" style="max-height: 50px;" onerror="this.style.display='none'">
+                        </figure>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Generate 15 games grid: column headers (Easy/Medium/Hard) + 15 videos
+            const gamesGrid = document.getElementById('games-grid');
+            const colHeaders = ['Easy', 'Medium', 'Hard'];
+            colHeaders.forEach(function(h) {
+                const el = document.createElement('div');
+                el.className = 'games-col-header';
+                el.textContent = h;
+                gamesGrid.appendChild(el);
+            });
+            for (let i = 1; i <= 15; i++) {
+                const videoItem = document.createElement('div');
+                videoItem.className = 'video-item';
+                const video = document.createElement('video');
+                video.controls = true;
+                video.muted = true;
+                video.loop = false;  // 不循环，结束时停留在最后一帧
+                video.playsInline = true;
+                const source = document.createElement('source');
+                source.src = `assets/videos/games_15/game_${String(i).padStart(2, '0')}.mp4`;
+                source.type = 'video/mp4';
+                video.appendChild(source);
+                videoItem.appendChild(video);
+                gamesGrid.appendChild(videoItem);
+            }
+
+            // Generate 3x5 models vs human grid (2 models + 1 human, 5 games), column headers only
+            const modelsGrid = document.getElementById('models-grid');
+            const models = ['qwen3-vl-32b-instruct', 'gemini-2.5-pro', 'human'];
+            const modelLabels = {
+                'qwen3-vl-32b-instruct': 'Qwen3-VL-32B-instruct',
+                'gemini-2.5-pro': 'Gemini-2.5-Pro',
+                'human': 'Human'
+            };
+            const modelClasses = {
+                'qwen3-vl-32b-instruct': 'model1',
+                'gemini-2.5-pro': 'model2',
+                'human': 'human'
+            };
+            models.forEach(function(m) {
+                const h = document.createElement('div');
+                h.className = 'models-col-header';
+                h.textContent = modelLabels[m];
+                modelsGrid.appendChild(h);
+            });
+            for (let row = 0; row < 5; row++) {
+                for (let col = 0; col < 3; col++) {
+                    const model = models[col];
+                    const videoItem = document.createElement('div');
+                    videoItem.className = 'video-item';
+                    const video = document.createElement('video');
+                    video.controls = true;
+                    video.muted = true;
+video.loop = false;  // 不循环，结束时停留在最后一帧
+                video.playsInline = true;
+                const source = document.createElement('source');
+                source.src = `assets/videos/models_vs_human/${model}/clip_${String(row + 1).padStart(2, '0')}.mp4`;
+                    source.type = 'video/mp4';
+                    video.appendChild(source);
+                    const label = document.createElement('div');
+                    label.className = `model-label ${modelClasses[model]}`;
+                    label.textContent = modelLabels[model];
+                    videoItem.appendChild(video);
+                    videoItem.appendChild(label);
+                    modelsGrid.appendChild(videoItem);
+                }
+            }
+
+            // Note: Video autoplay is disabled - videos are controlled by play/stop buttons
+
+            // Navigation highlighting
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.navbar-link');
+            const jumpDots = document.querySelectorAll('.jump-nav-dot');
+
+            const sectionObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href') === '#' + id) {
+                                link.classList.add('active');
+                            }
+                        });
+                        jumpDots.forEach(dot => {
+                            dot.classList.remove('active');
+                            if (dot.getAttribute('data-section') === id) {
+                                dot.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, { 
+                threshold: 0.2,
+                rootMargin: '-80px 0px -50% 0px'
+            });
+
+            sections.forEach(section => {
+                sectionObserver.observe(section);
+            });
+        });
+
+        // Function to play all videos in a container
+        function playAllVideos(containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            const videos = container.querySelectorAll('video');
+            videos.forEach(video => {
+                video.currentTime = 0; // Reset to beginning
+                video.play().catch(err => {
+                    console.log('Video play failed:', err);
+                });
+            });
+        }
+
+        // Function to stop all videos in a container
+        function stopAllVideos(containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            const videos = container.querySelectorAll('video');
+            videos.forEach(video => {
+                video.pause();
+                video.currentTime = 0; // Reset to beginning
+            });
+        }
+
+        function copyBibtex() {
+            const bibtex = document.getElementById('bibtex-content').textContent;
+            navigator.clipboard.writeText(bibtex).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                btn.innerHTML = '<span class="icon"><i class="fas fa-check"></i></span><span>Copied!</span>';
+                setTimeout(() => {
+                    btn.innerHTML = '<span class="icon"><i class="fas fa-copy"></i></span><span>Copy</span>';
+                }, 2000);
+            });
+        }
+
+        // Game Taxonomy: switch category to show corresponding 3 games (FlashAdventure-style)
+        (function initGameCategoryTabs() {
+            const tabs = document.getElementById('game-category-tabs');
+            const grid = document.getElementById('game-taxonomy-grid');
+            if (!tabs || !grid) return;
+            function setActiveCategory(category) {
+                tabs.querySelectorAll('.game-category-tab').forEach(function(t) {
+                    var isActive = t.getAttribute('data-category') === category;
+                    t.classList.toggle('active', isActive);
+                    t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+                });
+                grid.querySelectorAll('.game-taxonomy-item').forEach(function(item) {
+                    item.setAttribute('data-active', item.getAttribute('data-category') === category ? 'true' : 'false');
+                });
+                document.querySelectorAll('.game-category-desc-box').forEach(function(box) {
+                    var boxCategory = box.id.replace('game-category-desc-', '');
+                    box.setAttribute('data-active', boxCategory === category ? 'true' : 'false');
+                });
+            }
+            tabs.querySelectorAll('.game-category-tab').forEach(function(tab) {
+                tab.addEventListener('click', function() {
+                    setActiveCategory(this.getAttribute('data-category'));
+                });
+            });
+        })();
+    </script>
+</body>
+</html>
