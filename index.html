@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-`<html lang="en">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,10 +13,12 @@
     <style>
         html {
             scroll-behavior: smooth;
+            margin: 0;
         }
 
         body {
             font-family: 'Noto Sans', sans-serif;
+            margin: 0;
             padding-top: 56px;
         }
 
@@ -104,6 +106,7 @@
             /* 1. 控制文字开始的位置（距离顶部的距离）
                使用 vw (视口宽度的百分比) 而不是固定的 rem，
                这样 padding 会随着屏幕宽度的变化而等比例缩放，保持与图片的相对位置一致 */
+            margin-top: 0px;
             padding-top: min(31vw, 1000px); /* 👈 调整这个值来控制文字的起始位置，例如 30vw, 40vw */
             padding-bottom: 2rem;
             position: relative;
